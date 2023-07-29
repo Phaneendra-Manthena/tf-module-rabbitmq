@@ -25,13 +25,13 @@ resource "aws_security_group" "rabbitmq" {
   )
 }
 
-resource "aws_mq_configuration" "rabbitmq" {
-  description    = "${var.env}-rabbitmq-configuration"
-  name           = "${var.env}-rabbitmq-configuration"
-  engine_type    = var.engine_type
-  engine_version = var.engine_version
-  data = ""
-}
+#resource "aws_mq_configuration" "rabbitmq" {        # This is only supported for ActiveMQ
+##  description    = "${var.env}-rabbitmq-configuration"
+##  name           = "${var.env}-rabbitmq-configuration"
+##  engine_type    = var.engine_type
+##  engine_version = var.engine_version
+##  data = ""
+##}
 
 resource "aws_mq_broker" "rabbitmq" {
   broker_name = "${var.env}-rabbitmq"
@@ -41,10 +41,10 @@ resource "aws_mq_broker" "rabbitmq" {
   host_instance_type = var.host_instance_type
   security_groups    = [aws_security_group.rabbitmq.id]
   subnet_ids = var.deployment_mode == "SINGLE_INSTANCE" ? [var.subnet_ids[0]] : var.subnet_ids
-  configuration {
-    id       = aws_mq_configuration.rabbitmq.id
-    revision = aws_mq_configuration.rabbitmq.latest_revision
-  }
+#  configuration {      # This is only supported for ActiveMQ
+#    id       = aws_mq_configuration.rabbitmq.id
+#    revision = aws_mq_configuration.rabbitmq.latest_revision
+#  }
   user {
     username = data.aws_ssm_parameter.DB_ADMIN_USER.value
     password = data.aws_ssm_parameter.DB_ADMIN_PASS.value
