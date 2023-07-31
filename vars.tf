@@ -9,3 +9,4 @@ variable "subnet_ids" {}
 variable "component" {
   default = "rabbitmq"
 }
+variable "bastion_cidr" {}
