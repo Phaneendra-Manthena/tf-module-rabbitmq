@@ -4,19 +4,19 @@ resource "aws_security_group" "rabbitmq" {
   vpc_id      = var.vpc_id
 
   ingress {
-    description      = "rabbitmq"
-    from_port        = 5672
-    to_port          = 5672
-    protocol         = "tcp"
-    cidr_blocks      = var.allow_cidr
+    description = "rabbitmq"
+    from_port   = 5672
+    to_port     = 5672
+    protocol    = "tcp"
+    cidr_blocks = var.allow_cidr
 
   }
 
   egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
 
   }
   tags = merge(
@@ -54,4 +54,10 @@ resource "aws_mq_broker" "rabbitmq" {
     use_aws_owned_key = false
     kms_key_id        = data.aws_kms_key.key.arn
   }
+}
+
+resource "aws_ssm_parameter" "rabbitmq_endpoint" {
+  name  = "${var.env}-rabbitmq.ENDPOINT"
+  type  = "String"
+  value = replace(aws_mq_broker.rabbitmq.instances.0.endpoints.0, "amqp://", "")
 }
