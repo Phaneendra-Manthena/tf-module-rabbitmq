@@ -6,4 +6,6 @@ variable "engine_type" {}
 variable "host_instance_type" {}
 variable "deployment_mode" {}
 variable "subnet_ids" {}
-variable "component" {}
+variable "component" {
+  default = "rabbitmq"
+}
