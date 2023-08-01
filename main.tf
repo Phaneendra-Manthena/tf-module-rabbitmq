@@ -112,7 +112,7 @@ resource "aws_spot_instance_request" "rabbitmq" {
   )
 }
 resource "aws_route53_record" "rabbitmq" {
-  zone_id = "Z07612512EGUKWGDM5BZA"
+  zone_id = "Z03149483UPYYQRH6S5VY"
   name    = "rabbitmq-${var.env}.phanidevops.cloud"
   type    = "A"
   ttl     = 30
